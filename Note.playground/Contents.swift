@@ -132,8 +132,60 @@ class MyViewController : UIViewController {
         let unusualMenagerie = "Koala 🐨, Snail 🐌, Penguin 🐧, Dromedary 🐪"
         print("unusualMenagerie has \(unusualMenagerie.count) characters")
         
+        // 5.访问和修改
+        // String.Index它对应Character于字符串中每个值的位置。
+        let greeting = "Guten Tag!"
+        greeting[greeting.startIndex]
+        // G
+        greeting[greeting.index(before: greeting.endIndex)]
+        // !
+        greeting[greeting.index(after: greeting.startIndex)]
+        // u
+        let index = greeting.index(greeting.startIndex, offsetBy: 7)
+        greeting[index]
+        
+        // 使用该indices属性可以访问字符串中各个字符的所有索引。
+        
+        // 6.插入和删除
+        // 使用insert(_:at:)方法、insert(contentsOf:at:)方法。
+        var welcome = "hello"
+        welcome.insert("!", at: welcome.endIndex)
+        // welcome now equals "hello!"
+        
+        welcome.insert(contentsOf: " there", at: welcome.index(before: welcome.endIndex))
+        // welcome now equals "hello there!"
+        
+        // remove(at:)、removeSubrange(_:)方法：
+        welcome.remove(at: welcome.index(before: welcome.endIndex))
+        // welcome now equals "hello there"
+        
+        let range = welcome.index(welcome.endIndex, offsetBy: -6)..<welcome.endIndex
+        welcome.removeSubrange(range)
+        // welcome now equals "hello"
         
         
+        // 7.subString
+        let greetings = "Hello, world!"
+        let greetingsIndex = greetings.firstIndex(of: ",") ?? greetings.endIndex
+        let beginning = greetings[..<greetingsIndex]
+        print(beginning)
+        
+        // 8.比较字符串。==
+        let quotations = "We're a lot alike, you and I."
+        let sameQuotation = "We're a lot alike, you and I."
+        if quotations == sameQuotation {
+            print("These two strings are considered equal")
+        }
+        
+        // 9.前缀和后缀
+        if quotations.hasPrefix("We") {
+            print("有We")
+        }
+        
+        if quotations.hasSuffix("I.") {
+            print("有I.")
+        }
+
     }
     
     //
