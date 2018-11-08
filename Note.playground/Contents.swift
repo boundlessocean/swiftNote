@@ -16,14 +16,23 @@ class MyViewController : UIViewController {
         view.addSubview(label)
         self.view = view
         
-        // 一、基础
-        self.base()
-        // 二、运算符
-        self.baseOperators()
-        // 三、字符串
-        self.stringFunc()
-        // 四、集合
-        self.collection()
+//        // 一、基础
+//        self.base()
+//        // 二、运算符
+//        self.baseOperators()
+//        // 三、字符串
+//        self.stringFunc()
+//        // 四、集合
+//        self.collection()
+//        // 五、IF、FOR_IN、WHILE、REPEAT_WHILE、WHITCH、
+//        // 结束控制 continue、break、fallthrough、return、throw
+//        self.control()
+//        // 六、方法
+//        self.functions()
+//        // 七、Closures
+//        self.closures()
+        // 八、枚举
+        self.enumFuc()
     }
     
     // 一、基础
@@ -299,6 +308,187 @@ class MyViewController : UIViewController {
         }
         
     }
+    
+    // 五、条件/循环
+    func control() {
+        // 5.1 for in
+        // 数组迭代
+        var names = ["Anna", "Alex", "Brian", "Jack"]
+        for name in names {
+            print("Hello, \(name)!")
+        }
+        
+        // 字典迭代
+        let numberOfLegs = ["spider": 8, "ant": 6, "cat": 4]
+        for (animalName, legCount) in numberOfLegs {
+            print("\(animalName)s have \(legCount) legs")
+        }
+        
+        // 范围迭代
+        for i in 100..<105 {
+            print("index = \(i)")
+        }
+        
+        // 5.2 while、repeat- while
+        while "Anna" == names[0] {
+            print("while 画已经开始了")
+            names[0] = "anna"
+        }
+        
+        repeat {
+             print("repeat 画已经开始了")
+        } while "Anna" == names[0]
+        
+        // 5.3 switch
+        // 匹配一个字符
+        let someCharacter: Character = "z"
+        switch someCharacter {
+        case "a":
+            print("The first letter of the alphabet")
+        case "z":
+            print("The last letter of the alphabet")
+        default:
+            print("Some other character")
+        }
+        
+        // 匹配多个字符
+        let anotherCharacter: Character = "a"
+        switch anotherCharacter {
+        case "a", "A","b","B":
+            print("The letter A")
+        default:
+            print("Not the letter A")
+        }
+        
+        // 匹配范围
+        let approximateCount = 62
+        let countedThings = "moons orbiting Saturn"
+        let naturalCount: String
+        switch approximateCount {
+        case 1..<5:
+            naturalCount = "a few"
+        case 5..<12:
+            naturalCount = "several"
+        case 12..<100:
+            naturalCount = "dozens of"
+        default:
+            naturalCount = "many"
+        }
+        print("There are \(naturalCount) \(countedThings).")
+        
+        // 元组匹配
+        let somePoint = (1, 1)
+        switch somePoint {
+        case (0, 0):
+            print("\(somePoint) is at the origin")
+        case (0...2, 0...2):
+            print("\(somePoint) is inside the box")
+        default:
+            print("\(somePoint) is outside of the box")
+        }
+        
+        // 多个元组匹配
+        switch somePoint {
+        case (0, 0),(1,0):
+            print("\(somePoint) is at the origin")
+        case (0...2, 0...2):
+            print("\(somePoint) is inside the box")
+        default:
+            print("\(somePoint) is outside of the box")
+        }
+        
+        // value 绑定
+        let anotherPoint = (2, 0)
+        switch anotherPoint {
+        case (let x, 0):
+            print("on the x-axis with an x value of \(x)")
+        case (0, let y):
+            print("on the y-axis with a y value of \(y)")
+        case let (x, y):
+            print("somewhere else at (\(x), \(y))")
+        }
+        
+        // where条件
+        let yetAnotherPoint = (1, -1)
+        switch yetAnotherPoint {
+        case let (x, y) where x == y:
+            print("(\(x), \(y)) is on the line x == y")
+        case let (x, y) where x == -y:
+            print("(\(x), \(y)) is on the line x == -y")
+        case let (x, y):
+            print("(\(x), \(y)) is just some arbitrary point")
+        }
+        // continue 结束此次循环，进入下一次循环
+        // break 立即结束循环体
+        // fallthrough switch语句不会落入每个case的底部并进入下一个case，fallthrough下穿case
+    }
+    
+    
+    // 六、方法
+    func functions() {
+        
+        // 可变参数传递，函数返回值为元组
+        func mutal(name:String ,age:Int, values:Int...) -> (name:String,age:Int,total:Int) {
+            var total = 0
+            for value in values {
+                total += value
+            }
+            let descripte = "名字叫" + name + "，年龄" +  String(age) + "，收入" + String(total)
+            print(descripte)
+            
+            return (name,age,total)
+        }
+        print(mutal(name: "小张", age: 20, values: 1,2,3,4,5,6))
+        // 函数作为参数，函数作为返回值 使用
+    }
+    
+    // 七、闭包
+    func closures() {
+        
+        var names = ["kille","Nooup","Hoolk","Doone"]
+        
+        names.sorted {
+            return $0 > $1
+        }
+        print(names)
+        
+        // 闭包作为参数
+        func bs_viewAction(action:(Int,String...)->Void){
+            action(0,"点击头像","登录","查看详情","设置")
+        }
+        bs_viewAction { (type, actions:String...)  in
+            print(type,actions)
+        }
+        
+        // 闭包作为属性
+        let bs_viewActions = {(type:Int,actions:String...)->Void in
+            print(actions[0])
+        }
+        bs_viewActions(1,"你好啊","211")
+        
+    }
+    
+    // 八、枚举
+    func enumFuc(){
+        enum Beverage: CaseIterable {
+            case coffee, tea, juice
+        }
+        let numberOfChoices = Beverage.allCases.count
+        print("\(numberOfChoices) beverages available")
+        
+        // 隐含地分配原始价值
+        enum Planet: Int {
+            case mercury = 3, venus, earth, mars, jupiter, saturn, uranus, neptune
+        }
+        
+        // 通过value获取 枚举
+        let x = Planet(rawValue:4) ?? Planet.neptune
+        print(x)
+        
+        // 递归枚举
+        
+    }
+    
     
 }
 // Present the view controller in the Live View window
