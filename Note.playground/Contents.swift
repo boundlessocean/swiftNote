@@ -3,6 +3,12 @@
 import UIKit
 import PlaygroundSupport
 
+extension Int {
+    mutating func square() {
+        self = self * self
+    }
+}
+
 class MyViewController : UIViewController {
     override func loadView() {
         let view = UIView()
@@ -31,8 +37,19 @@ class MyViewController : UIViewController {
 //        self.functions()
 //        // 七、Closures
 //        self.closures()
-        // 八、枚举
-        self.enumFuc()
+//        // 八、枚举
+//        self.enumFuc()
+        // 九、结构体、类
+//        self.structAndClass()
+        // 十、错误处理
+//        self.errorHandle()
+        // 十一、类型判断转换
+//        self.typeCasing()
+        // 十二、extension
+        self.extensionFuc()
+        
+       
+       
     }
     
     // 一、基础
@@ -482,11 +499,224 @@ class MyViewController : UIViewController {
         }
         
         // 通过value获取 枚举
-        let x = Planet(rawValue:4) ?? Planet.neptune
+        let x = Planet(rawValue:4)!
         print(x)
         
         // 递归枚举
         
+    }
+    
+    // 九、结构体、类
+    func structAndClass() {
+        // 结构体
+        // 结构和枚举是值类型，分配给一个变量或常数，或当它传递给函数，其值被复制
+        // so 常量引用的实例无法修改属性
+        struct Person{
+            var age:Int = 100
+            var name:String = "ss"
+        }
+        // 类
+        // 分配给变量或常量时或者传递给函数时不会被复制，是对同一现有实例的引用
+        // so 常量引用的实例可以修改属性
+        // 判断两个常量/变量是否指向同一实例 与（===）相同  与（!==）不一样
+        class Student{
+            lazy var classNum:Int = 0 // = 为可读写（包含getter、setter）
+            var girlFriend:NSString { // 重写 getter、setter
+                get{
+                    return "小丽"
+                }
+                set{
+                    print(newValue)
+                }
+            }
+            
+            var person:Person {// 只读属性
+               return Person(age: 10, name: "2222")
+            }
+/* lazy */  var score:Float = 100 {
+                willSet (newScore){
+                    print(newScore)
+                }
+                didSet{
+                    print(oldValue)
+                }
+            }
+            // static 标识所有实例都共享statu属性，statu只分配一次l内存空间
+            static var statu = "China"
+            // ? 属性可选
+            var hairColor:UIColor?
+            
+        }
+        
+        let student = Student()
+        student.hairColor = UIColor.red
+        print(student.girlFriend)
+        student.girlFriend = "丽丽"
+       
+        
+        // 继承
+        class Animal {
+            var footCount = 4
+            var canFly = false
+            func eat() {
+                print("吃饭")
+            }
+            final func run() {
+                print("开跑")
+            }
+        }
+        
+        class Cat:Animal{
+            var age = 1
+            override var canFly: Bool {
+                didSet{
+                    print(oldValue)
+                }
+            }
+            override func eat() {
+                super.eat()
+                print("吃鱼")
+            }
+            
+            // 反初始化 相当于dealloc
+            deinit {
+                // perform the deinitialization
+            }
+        }
+        
+        let cat = Cat()
+        cat.canFly = true
+        print(cat.canFly)
+        
+        // 防止重写。final varfinal funcfinal class funcfinal subscript
+    }
+    
+    // 十、错误处理
+    
+    func errorHandle() {
+        enum OperationError : Error {
+            case ErrorOne
+            case ErrorTwo
+            case ErrorThree(String)
+            case ErrorOther
+        }
+        
+        func numberTest(num:Int) throws{
+            if num == 1 {
+                print("成功")
+            }else if num == 2 {
+                throw OperationError.ErrorTwo
+            }else if num == 3{
+                throw OperationError.ErrorThree("失败")
+            }else {
+                throw OperationError.ErrorOther
+            }
+        }
+
+        func numberTest2(num:Int) throws{
+            try numberTest(num: num)
+        }
+        
+        // 1.do catch处理
+        do{
+            try numberTest2(num: 2)
+        } catch OperationError.ErrorOne{
+            print(OperationError.ErrorOne)
+        } catch OperationError.ErrorTwo{
+            print(OperationError.ErrorTwo)
+        } catch OperationError.ErrorOther{
+            print(OperationError.ErrorOther)
+        } catch{
+            print(error)
+        }
+        
+        
+        // 2.将错误转换为可选值
+        func throwDeliver(num:Int) throws ->OperationError {
+            if num == 1 {
+                print("成功")
+                return OperationError.ErrorOne
+            }else if num == 2 {
+                return OperationError.ErrorTwo
+            }else if num == 3{
+                return OperationError.ErrorThree("失败")
+            }else {
+                return OperationError.ErrorOther
+            }
+        }
+        
+        if let retureMessage = try? throwDeliver(num: 3) {
+            print(retureMessage)
+        }
+        
+        // 3.确定没有错误
+        try! numberTest2(num: 1);
+      
+    }
+    
+    
+    // 十一、类型判断转换
+    func typeCasing(){
+        class MediaItem {
+            var name: String
+            init(name: String) {
+                self.name = name
+            }
+        }
+        
+        class Movie: MediaItem {
+            var director: String
+            init(name: String, director: String) {
+                self.director = director
+                super.init(name: name)
+            }
+        }
+        
+        class Song: MediaItem {
+            var artist: String
+            init(name: String, artist: String) {
+                self.artist = artist
+                super.init(name: name)
+            }
+        }
+        
+        let library = [
+            Movie(name: "Casablanca", director: "Michael Curtiz"),
+            Song(name: "Blue Suede Shoes", artist: "Elvis Presley"),
+            Movie(name: "Citizen Kane", director: "Orson Welles"),
+            Song(name: "The One And Only", artist: "Chesney Hawkes"),
+            Song(name: "Never Gonna Give You Up", artist: "Rick Astley")
+        ]
+        
+       // is、来检查实例是否属于某个（类/子类）的实例
+        var count = 0
+        
+        for item in library {
+            if item is Song {
+                count += 1
+            }
+        }
+        print(count)
+        
+        // as、向下转换为子类类型 as! 强制转型、as？可选转型
+        for item in library {
+            if let movie = item as? Movie {
+                print("Movie: \(movie.name), dir. \(movie.director)")
+            } else if let song = item as? Song {
+                print("Song: \(song.name), by \(song.artist)")
+            }
+        }
+        
+        // Any 可以表示任何类型的实例，包括函数类型。
+        // AnyObject 可以表示任何类类型的实例。
+
+    }
+    
+    // 十二、extension
+    func extensionFuc()  {
+        var num = 3
+        num.square()
+        print(num)
     }
     
     
