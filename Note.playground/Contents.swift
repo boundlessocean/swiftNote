@@ -46,9 +46,12 @@ class MyViewController : UIViewController {
         // 十一、类型判断转换
 //        self.typeCasing()
         // 十二、extension
-        self.extensionFuc()
+//        self.extensionFuc()
+        // 十三、协议
+//        self.protoclFuc()
+        // 十四、泛型
+//        self.generics()
         
-       
        
     }
     
@@ -719,6 +722,32 @@ class MyViewController : UIViewController {
         print(num)
     }
     
+    // 十三、协议
+    func protoclFuc() {
+        //        https://www.jianshu.com/p/87bcd8694d38
+        //        1.协议的基本语法
+        //        2.定义协议与实现协议
+        //        3.协议与构造器
+        //        4.协议作为类型
+        //        5.协议实现委托代理模式
+        //        6.通过扩展遵循协议
+        //        7.协议类型的集合
+        //        8.协议继承协议
+        //        9.类类型专属协议
+        //        10.协议合成
+        //        11.检查协议的一致性
+    }
+    
+    // 十四、泛型
+    func generics(){
+        //        https://www.jianshu.com/p/6fd3936b90f1
+        //        1.泛型解决的问题
+        //        2.泛型函数
+        //        3.泛型类型
+        //        4.扩展一个泛型类型
+        //        5.泛型的类型约束
+        //        6.关联类型
+    }
     
 }
 // Present the view controller in the Live View window
